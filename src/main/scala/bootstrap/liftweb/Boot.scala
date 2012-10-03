@@ -16,29 +16,29 @@ import code.lib._
  * to modify lift's environment
  */
 class Boot {
-    def boot {
-        // where to search snippet
-        LiftRules.addToPackages("code")
+  def boot {
+    // where to search snippet
+    LiftRules.addToPackages("code")
 
-        //Show the spinny image when an Ajax call starts
-        LiftRules.ajaxStart =
-            Full(() => LiftRules.jsArtifacts.show("ajax-loader").cmd)
+    //Show the spinny image when an Ajax call starts
+    LiftRules.ajaxStart =
+      Full(() => LiftRules.jsArtifacts.show("ajax-loader").cmd)
 
-        // Make the spinny image go away when it ends
-        LiftRules.ajaxEnd =
-            Full(() => LiftRules.jsArtifacts.hide("ajax-loader").cmd)
+    // Make the spinny image go away when it ends
+    LiftRules.ajaxEnd =
+      Full(() => LiftRules.jsArtifacts.hide("ajax-loader").cmd)
 
-        // Force the request to be UTF-8
-        LiftRules.early.append(_.setCharacterEncoding("UTF-8"))
+    // Force the request to be UTF-8
+    LiftRules.early.append(_.setCharacterEncoding("UTF-8"))
 
-        // Use HTML5 for rendering
-        LiftRules.htmlProperties.default.set((r: Req) =>
-            new Html5Properties(r.userAgent))
+    // Use HTML5 for rendering
+    LiftRules.htmlProperties.default.set((r: Req) =>
+      new Html5Properties(r.userAgent))
 
-        LiftRules.statelessDispatch.append(FullRest)
+    LiftRules.statelessDispatch.append(FullRest)
 
-        // stateful versions of the above
-        // LiftRules.dispatch.append(FullRest)
+    // stateful versions of the above
+    // LiftRules.dispatch.append(FullRest)
 
-    }
+  }
 }

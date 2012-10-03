@@ -17,12 +17,12 @@ import scala.xml._
  */
 object FullRest extends RestHelper {
 
-    // REST path
-    serve {
+  // REST path
+  serve {
 
-        case "rest" :: "read" :: currencyType :: Nil JsonGet _ => RateReader.readJson(currencyType)
+    case "rest" :: "read" :: currencyType :: Nil JsonGet _ => RateReader.readJson(currencyType)
 
-        case "currency" :: currencyType :: Nil JsonGet _ => Prophet.forecast(currencyType): JValue
+    case "currency" :: currencyType :: Nil JsonGet _ => Prophet.forecast(currencyType): JValue
 
-    }
+  }
 }
