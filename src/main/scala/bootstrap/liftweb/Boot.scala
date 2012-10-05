@@ -18,6 +18,8 @@ import code.lib._
 class Boot {
   def boot {
     
+    code.lib.cache.CacheManager.init
+    
     // where to search snippet
     LiftRules.addToPackages("code")
 
