@@ -28,10 +28,11 @@ object RateReader {
   }
 
   private def readRates(currencyType: String, beginDate: Date, endDate: Date): Seq[Currency] = {
-    import java.net.{ URLConnection, URL }
-    val url = new URL("""http://www.cbr.ru/scripts/XML_dynamic.asp?date_req1=""" + formatter.format(beginDate) + """&date_req2=""" + formatter.format(endDate) + """&VAL_NM_RQ=""" + currencyTypeCode.get(currencyType).get)
-    val conn = url.openConnection
-    val history: Elem = XML.load(conn.getInputStream)
+//    import java.net.{ URLConnection, URL }
+//    val url = new URL("""http://www.cbr.ru/scripts/XML_dynamic.asp?date_req1=""" + formatter.format(beginDate) + """&date_req2=""" + formatter.format(endDate) + """&VAL_NM_RQ=""" + currencyTypeCode.get(currencyType).get)
+//    val conn = url.openConnection
+//    val history: Elem = XML.load(conn.getInputStream)
+    val history = XML.load("""http://www.cbr.ru/scripts/XML_dynamic.asp?date_req1=""" + formatter.format(beginDate) + """&date_req2=""" + formatter.format(endDate) + """&VAL_NM_RQ=""" + currencyTypeCode.get(currencyType).get)
     val result: Seq[Currency] = (history \ "Record").map { record => { Currency(formatter2.parse((record \ "@Date").text), BigDecimal((record \ "Value").text.replace(",", "."))) } }
     result.reverse
   }
