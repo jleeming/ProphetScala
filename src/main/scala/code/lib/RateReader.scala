@@ -23,10 +23,6 @@ object RateReader {
     if (history.size >= dayCount) history.slice(0, dayCount) else readRates(currencyType, 30.days.ago, now).slice(0, dayCount)
   }
 
-  def readJson(currencyType: String): JValue = {
-    JString(readRates(currencyType).foldLeft("")((a, b) => a + b.date + "->" + b.value + " "))
-  }
-
   private def readRates(currencyType: String, beginDate: Date, endDate: Date): Seq[Currency] = {
     val history = XML.load("""http://www.cbr.ru/scripts/XML_dynamic.asp?date_req1=""" + formatter.format(beginDate) + """&date_req2=""" + formatter.format(endDate) + """&VAL_NM_RQ=""" + currencyTypeCode.get(currencyType).get)
     val result: Seq[Currency] = (history \ "Record").map { record => { Currency(formatter2.parse((record \ "@Date").text), BigDecimal((record \ "Value").text.replace(",", "."))) } }

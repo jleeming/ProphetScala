@@ -16,11 +16,11 @@ import scala.xml._
  * A full REST example
  */
 object FullRest extends RestHelper {
-
+    
   // REST path
   serve {
 
-    case "rest" :: "read" :: currencyType :: Nil JsonGet _ => RateReader.readJson(currencyType)
+    case "rest" :: "test" :: Nil JsonGet _ => JString(net.liftweb.util.Props.get("memcachedURL", "error"))
 
     case "currency" :: currencyType :: Nil JsonGet _ => Prophet.forecast(currencyType): JValue
 
