@@ -12,13 +12,13 @@ import net.liftweb.util.TimeHelpers
 import code.lib.DateTimeSerializer
 import java.util.UUID
 
-case class CurrencyForecast(date: Date, currency: String, guid: String, history: Seq[Currency], future: Currency)
+case class CurrencyForecast(date: Date, currency: String, guid: String, history: Seq[Currency], future: Currency) {
+  def this(currencyType: String, rates: Seq[Currency], forecast: BigDecimal) = this(now, currencyType, UUID.randomUUID().toString(), rates, Currency(1.days.later, forecast))
+}
 
 object CurrencyForecast {
   private implicit val formats =
     net.liftweb.json.DefaultFormats + BigDecimalSerializer + DateTimeSerializer
-
-  def create(currencyType: String, rates: Seq[Currency], forecast: BigDecimal): CurrencyForecast = CurrencyForecast(now, currencyType, UUID.randomUUID().toString(), rates, Currency(1.days.later, forecast))
 
   /**
    * Convert the item to JSON format.  This is
