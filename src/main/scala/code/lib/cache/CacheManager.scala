@@ -15,7 +15,6 @@ object CacheManager {
     val server: String = net.liftweb.util.Props.get("memcachedURL", "localhost")
     val port: Int = net.liftweb.util.Props.getInt("memcachedPort", 11211) 
     client = new XMemcachedClient(server, port)
-    client.setConnectionPoolSize(100)
     println("CacheManager start")
   }
   

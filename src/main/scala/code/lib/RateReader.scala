@@ -21,21 +21,21 @@ object RateReader {
   val currencyTypeCode: HashMap[String, String] = HashMap(("USD" -> "R01235"), ("EUR" -> "R01239"), ("GBP" -> "R01035"))
 
   def readRatesWithCache(currencyType: String): Seq[Currency] = {
-    val fromCache = CacheManager.get(generateKey)
+    val fromCache = CacheManager.get(generateKey(currencyType))
     if (fromCache == null) {
       val rates = readRates(currencyType)
-      CacheManager.set(generateKey, rates)
+      CacheManager.set(generateKey(currencyType), rates)
       rates
     } else {
       fromCache
     } 
   }
   
-  private def generateKey: String = {
-    formatter2.format(now) + ":" + DAY_COUNT
+  private def generateKey(currencyType: String): String = {
+    currencyType + ":" + formatter2.format(now) + ":" + DAY_COUNT
   }
   
-  def readRates(currencyType: String): Seq[Currency] = {    
+  def readRates(currencyType: String): Seq[Currency] = {
     val history = readRates(currencyType, (DAY_COUNT * 2).days.ago, now)
     if (history.size >= DAY_COUNT) history.slice(history.size - DAY_COUNT, history.size) else readRates(currencyType, 30.days.ago, now).slice(history.size - DAY_COUNT, history.size -1)
   }
