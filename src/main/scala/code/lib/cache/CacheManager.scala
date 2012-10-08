@@ -20,6 +20,7 @@ object CacheManager {
   
   def shutdown = {
     client.shutdown()
+    println("CacheManager stop")
   }
   
   def set(key: String, currencyList: Seq[Currency]) = {

@@ -30,6 +30,11 @@ class Boot {
 
     // stateful versions of the above
     // LiftRules.dispatch.append(FullRest)
+    
+    Runtime.getRuntime().addShutdownHook(new Thread() { override def run {
+          code.lib.cache.CacheManager.shutdown 
+        }
+      })
 
   }
 }
