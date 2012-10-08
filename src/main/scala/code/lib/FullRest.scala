@@ -34,7 +34,7 @@ object FullRest extends RestHelper {
       JString("OK")
     }
     
-    case "currency" :: currencyType :: Nil JsonGet _ => Prophet.forecast(currencyType): JValue
+    case "currency" :: currencyType :: Nil JsonGet _ => Prophet.forecast(currencyType.toUpperCase()): JValue
 
   }
 }
