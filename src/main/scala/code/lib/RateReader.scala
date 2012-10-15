@@ -11,8 +11,12 @@ import java.util.Date
 import java.text.SimpleDateFormat
 import code.model.Currency
 
+import scala.actors.Actor._
+
 import net.liftweb.util.TimeHelpers._
 import code.lib.cache.CacheManager
+import code.lib.cache.GetInfo
+import code.lib.cache.SetInfo
 
 class RateReader {
   val DAY_COUNT = 7
@@ -21,14 +25,18 @@ class RateReader {
   val currencyTypeCode: HashMap[String, String] = HashMap(("USD" -> "R01235"), ("EUR" -> "R01239"), ("GBP" -> "R01035"))
 
   def readRatesWithCache(currencyType: String): Seq[Currency] = {
-    val fromCache = CacheManager.get(generateKey(currencyType))
-    if (fromCache == null) {
-      val rates = readRates(currencyType)
-      CacheManager.set(generateKey(currencyType), rates)
-      rates
-    } else {
-      fromCache
-    } 
+    CacheManager ! GetInfo(generateKey(currencyType), self)
+    self.receiveWithin(10000) { 
+      case fromCache  => {
+        if (fromCache == null) {
+          val rates = readRates(currencyType)
+          CacheManager ! SetInfo(generateKey(currencyType), rates)
+          rates
+        } else {
+          fromCache.asInstanceOf[Seq[Currency]]
+        }  
+      } 
+    }
   }
   
   private def generateKey(currencyType: String): String = {

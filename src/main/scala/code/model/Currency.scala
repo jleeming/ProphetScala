@@ -2,7 +2,7 @@ package code.model
 import java.util.Date
 import net.liftweb.json.JsonAST.JValue
 import net.liftweb.json.Extraction
-import code.lib.BigDecimalSerializer
+import code.lib.serializer.BigDecimalSerializer
 
 case class Currency(date: Date, value: BigDecimal)
 

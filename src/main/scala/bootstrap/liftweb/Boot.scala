@@ -18,7 +18,8 @@ import code.lib._
 class Boot {
   def boot {
     
-    code.lib.cache.CacheManager.init
+    code.lib.cache.CacheManager.start()
+    code.lib.cache.CacheManager ! "init"
     
     // where to search snippet
     LiftRules.addToPackages("code")
@@ -30,6 +31,13 @@ class Boot {
 
     // stateful versions of the above
     // LiftRules.dispatch.append(FullRest)
+    
+    Runtime.getRuntime().addShutdownHook(new Thread() { 
+      override def run {
+          code.lib.cache.CacheManager ! "shutdown"
+          code.lib.cache.CacheManager ! "stop"         
+        }
+    })
 
   }
 }
