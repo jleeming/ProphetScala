@@ -8,6 +8,7 @@ object RunWebApp extends App {
   val scc = new SelectChannelConnector
   scc.setPort(8080)
   server.setConnectors(Array(scc))
+  
 
   val context = new WebAppContext()
   context.setServer(server)
@@ -22,6 +23,7 @@ object RunWebApp extends App {
   try {
     println(">>> STARTING EMBEDDED JETTY SERVER, PRESS ANY KEY TO STOP")
     server.start()
+    
     while (System.in.available() == 0) {
       Thread.sleep(5000)
     }

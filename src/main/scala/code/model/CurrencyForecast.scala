@@ -6,10 +6,10 @@ import Helpers._
 import common._
 import json._
 import scala.xml.Node
-import code.lib.BigDecimalSerializer
+import code.lib.serializer.BigDecimalSerializer
 import java.util.Date
 import net.liftweb.util.TimeHelpers
-import code.lib.DateTimeSerializer
+import code.lib.serializer.DateTimeSerializer
 import java.util.UUID
 
 case class CurrencyForecast(date: Date, currency: String, guid: String, history: Seq[Currency], future: Currency) {

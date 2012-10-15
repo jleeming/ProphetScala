@@ -1,4 +1,4 @@
-package code.lib
+package code.lib.serializer
 
 import net.liftweb.json._
 import java.text.SimpleDateFormat

@@ -10,6 +10,8 @@ resolvers ++= Seq("snapshots"     at "http://oss.sonatype.org/content/repositori
                 "releases"        at "http://oss.sonatype.org/content/repositories/releases"
                 )
 
+resolvers += "Spy Repository" at "http://files.couchbase.com/maven2/"
+
 seq(com.github.siasia.WebPlugin.webSettings :_*)
 
 scalacOptions ++= Seq("-deprecation", "-unchecked")
@@ -23,7 +25,8 @@ libraryDependencies ++= {
     "org.eclipse.jetty.orbit" % "javax.servlet" % "3.0.0.v201112011016" % "container,test" artifacts Artifact("javax.servlet", "jar", "jar"),
     "ch.qos.logback"    % "logback-classic"     % "1.0.6",
     "org.specs2"        %% "specs2"             % "1.12.1"           % "test",
-    "com.googlecode.xmemcached" % "xmemcached"  % "1.3.2"
+    "com.googlecode.xmemcached" % "xmemcached"  % "1.3.2",
+    "spy"               % "spymemcached"        % "2.8.1"
   )
 }
 
