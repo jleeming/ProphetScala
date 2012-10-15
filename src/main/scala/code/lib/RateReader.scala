@@ -14,7 +14,7 @@ import code.model.Currency
 import net.liftweb.util.TimeHelpers._
 import code.lib.cache.CacheManager
 
-object RateReader {
+class RateReader {
   val DAY_COUNT = 7
   val formatter: SimpleDateFormat = new java.text.SimpleDateFormat("dd/MM/yyyy")
   val formatter2: SimpleDateFormat = new java.text.SimpleDateFormat("dd.MM.yyyy")
