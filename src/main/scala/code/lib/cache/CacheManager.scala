@@ -57,7 +57,7 @@ object CacheManager extends Actor {
     var myObj: AnyRef = null
     var f: java.util.concurrent.Future[Object] = client.asyncGet(key)
     try {
-      myObj = f.get(5, java.util.concurrent.TimeUnit.SECONDS)
+      myObj = f.get(20, java.util.concurrent.TimeUnit.SECONDS)
       myObj.asInstanceOf[Seq[Currency]]
     } catch {
       // Since we don't need this, go ahead and cancel the operation.  This
