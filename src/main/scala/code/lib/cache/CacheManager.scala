@@ -4,21 +4,19 @@ import code.model.Currency
 import net.spy.memcached.MemcachedClient
 import java.net.InetSocketAddress
 
-import scala.actors.Actor
+import akka.actor._
 
-case class GetInfo(key: String, actor: Actor)
+case class GetInfo(key: String, actor: ActorRef)
 case class SetInfo(key: String, currencyList: Seq[Currency])
 
-object CacheManager extends Actor {
+class CacheManager extends Actor {
   
   private val EXPIRE: Int = 3600 * 24 * 7;
 //  private val WAIT: Long = 5000;
   
   var client: MemcachedClient = null
   
-  def act() {
-    loop {
-      react {
+  def receive = {
         case GetInfo(key, actor) =>
           actor ! get(key)
         case SetInfo(key, currencyList) =>
@@ -31,8 +29,6 @@ object CacheManager extends Actor {
           clear
         case "stop" =>  
           exit()  
-      }
-    }
   } 
   
   def init = {
@@ -58,7 +54,7 @@ object CacheManager extends Actor {
     var myObj: AnyRef = null
     var f: java.util.concurrent.Future[Object] = client.asyncGet(key)
     try {
-      myObj = f.get(5, java.util.concurrent.TimeUnit.SECONDS)
+      myObj = f.get(20, java.util.concurrent.TimeUnit.SECONDS)
       myObj.asInstanceOf[Seq[Currency]]
     } catch {
       // Since we don't need this, go ahead and cancel the operation.  This

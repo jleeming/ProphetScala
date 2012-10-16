@@ -7,10 +7,10 @@ organization := "ru.mokc"
 scalaVersion := "2.9.1"
 
 resolvers ++= Seq("snapshots"     at "http://oss.sonatype.org/content/repositories/snapshots",
-                "releases"        at "http://oss.sonatype.org/content/repositories/releases"
+                "releases"        at "http://oss.sonatype.org/content/repositories/releases",
+                "Spy Repository" at "http://files.couchbase.com/maven2/",
+                "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
                 )
-
-resolvers += "Spy Repository" at "http://files.couchbase.com/maven2/"
 
 seq(com.github.siasia.WebPlugin.webSettings :_*)
 
@@ -26,7 +26,8 @@ libraryDependencies ++= {
     "ch.qos.logback"    % "logback-classic"     % "1.0.6",
     "org.specs2"        %% "specs2"             % "1.12.1"           % "test",
     "com.googlecode.xmemcached" % "xmemcached"  % "1.3.2",
-    "spy"               % "spymemcached"        % "2.8.1"
+    "spy"               % "spymemcached"        % "2.8.1",
+    "com.typesafe.akka" % "akka-actor"          % "2.0.3"
   )
 }
 
