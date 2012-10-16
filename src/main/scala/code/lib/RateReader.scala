@@ -10,13 +10,14 @@ import scala.xml._
 import java.util.Date
 import java.text.SimpleDateFormat
 import code.model.Currency
-
-import scala.actors.Actor._
-
 import net.liftweb.util.TimeHelpers._
 import code.lib.cache.CacheManager
 import code.lib.cache.GetInfo
 import code.lib.cache.SetInfo
+import akka.actor._
+import akka.dispatch.Await
+import akka.pattern.ask
+import code.lib.cache.CacheMaster
 
 class RateReader {
   val DAY_COUNT = 7
@@ -25,17 +26,19 @@ class RateReader {
   val currencyTypeCode: HashMap[String, String] = HashMap(("USD" -> "R01235"), ("EUR" -> "R01239"), ("GBP" -> "R01035"))
 
   def readRatesWithCache(currencyType: String): Seq[Currency] = {
-    CacheManager ! GetInfo(generateKey(currencyType), self)
-    self.receiveWithin(10000) { 
-      case fromCache  => {
-        if (fromCache == null) {
-          val rates = readRates(currencyType)
-          CacheManager ! SetInfo(generateKey(currencyType), rates)
-          rates
-        } else {
-          fromCache.asInstanceOf[Seq[Currency]]
-        }  
-      } 
+    val cacheMaster = System.cacheMaster
+    
+    implicit val timeout = akka.util.Timeout(10000)
+    val future = cacheMaster ? GetInfo(generateKey(currencyType)) // enabled by the “ask” import
+    val result = Await.result(future, timeout.duration).asInstanceOf[Seq[Currency]]
+  
+    if (result == null) {
+      println(" --- CBR call ---")
+      val rates = readRates(currencyType)
+      cacheMaster ! SetInfo(generateKey(currencyType), rates)
+      rates
+    } else {
+      result
     }
   }
   

@@ -3,13 +3,13 @@ package bootstrap.liftweb
 import net.liftweb._
 import util._
 import Helpers._
-
 import common._
 import http._
 import sitemap._
 import Loc._
-
 import code.lib._
+import akka.actor.ActorSystem
+import code.lib.cache.CacheMaster
 
 /**
  * A class that's instantiated early and run.  It allows the application
@@ -17,9 +17,6 @@ import code.lib._
  */
 class Boot {
   def boot {
-    
-    code.lib.cache.CacheManager.start()
-    code.lib.cache.CacheManager ! "init"
     
     // where to search snippet
     LiftRules.addToPackages("code")
@@ -34,8 +31,7 @@ class Boot {
     
     Runtime.getRuntime().addShutdownHook(new Thread() { 
       override def run {
-          code.lib.cache.CacheManager ! "shutdown"
-          code.lib.cache.CacheManager ! "stop"         
+          System.system.shutdown         
         }
     })
 
