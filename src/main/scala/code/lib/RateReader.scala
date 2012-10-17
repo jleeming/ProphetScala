@@ -58,7 +58,7 @@ class RateReader {
   
   def readRates(currencyType: String): Seq[Currency] = {
     val history = readRates(currencyType, (DAY_COUNT * 2).days.ago, now)
-    if (history.size >= DAY_COUNT) history.slice(history.size - DAY_COUNT, history.size) else readRates(currencyType, 30.days.ago, now).slice(history.size - DAY_COUNT, history.size -1)
+    if (history.size >= DAY_COUNT) history.slice(history.size - DAY_COUNT, history.size) else readRates(currencyType, 30.days.ago, now).slice(history.size - DAY_COUNT, history.size)
   }
 
   private def readRates(currencyType: String, beginDate: Date, endDate: Date): Seq[Currency] = {
