@@ -9,7 +9,6 @@ import sitemap._
 import Loc._
 import code.lib._
 import akka.actor.ActorSystem
-import code.lib.cache.CacheMaster
 
 /**
  * A class that's instantiated early and run.  It allows the application
@@ -27,13 +26,7 @@ class Boot {
     LiftRules.statelessDispatch.append(FullRest)
 
     // stateful versions of the above
-    // LiftRules.dispatch.append(FullRest)
-    
-    Runtime.getRuntime().addShutdownHook(new Thread() { 
-      override def run {
-          System.system.shutdown         
-        }
-    })
+    // LiftRules.dispatch.append(FullRest)       
 
   }
 }
