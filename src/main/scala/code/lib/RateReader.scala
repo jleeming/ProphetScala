@@ -28,10 +28,20 @@ class RateReader {
   def readRatesWithCache(currencyType: String): Seq[Currency] = {
     val cacheMaster = System.cacheMaster
     
-    implicit val timeout = akka.util.Timeout(10000)
-    val future = cacheMaster ? GetInfo(generateKey(currencyType)) // enabled by the “ask” import
-    val result = Await.result(future, timeout.duration).asInstanceOf[Seq[Currency]]
-  
+    var result: Seq[Currency] = null
+    var i: Int = 0
+    
+    while ((i < 2) && (result == null)) { 
+      try {
+        implicit val timeout = akka.util.Timeout(500)
+        val future = cacheMaster ? GetInfo(generateKey(currencyType)) // enabled by the “ask” import
+        result = Await.result(future, timeout.duration).asInstanceOf[Seq[Currency]]
+      } catch {
+        case e: Exception =>
+      }
+      i += 1
+    }  
+    
     if (result == null) {
       println(" --- CBR call ---")
       val rates = readRates(currencyType)

@@ -27,7 +27,7 @@ class Boot {
     LiftRules.statelessDispatch.append(FullRest)
 
     // stateful versions of the above
-    // LiftRules.dispatch.append(FullRest)
+    //LiftRules.dispatch.append(FullRest)
     
     Runtime.getRuntime().addShutdownHook(new Thread() { 
       override def run {

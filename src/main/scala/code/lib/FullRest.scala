@@ -37,9 +37,6 @@ object FullRest extends RestHelper {
     
     case "currency" :: currencyType :: Nil JsonGet _ => {
       Prophet.forecast(currencyType.toUpperCase()): JValue
-//      Prophet ! ((currencyType.toUpperCase(), self))      
-//      val result: CurrencyForecast = self.receiveWithin(10000) { case x: CurrencyForecast => x }
-//      result: JValue
     }
 
   }
